@@ -10,3 +10,5 @@
  * Description:
  *
  */
+
+ echo $other;

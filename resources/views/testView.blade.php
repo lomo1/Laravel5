@@ -10,3 +10,6 @@
  * Description:
  *
  */
+
+echo "Test View....<br>";
+echo "Name: ". $name. " Age: ". $age . " <br>Others: ".$other;
