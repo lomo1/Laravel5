@@ -192,6 +192,16 @@ Laravel Framework 5.5.27
 
 ### 配置
 
+#### Nginx
+
+Nginx配置:
+```
+server{
+    listen 8000;
+    server_name localhost;
+}
+```
+
 #### 基本环境配置
 通过 laravel new xx 生成后, 进行基本的简单配置, 时区、语言等等
 
@@ -298,6 +308,154 @@ http://localhost:8000/api/user/sdfsdfsdf%E6%B0%B4%E7%94%B5%E8%B4%B9123
   "data": "接收到的ID: sdfsdfsdf水电费123"
 }
 ```
+
+#### 本地站点共享到公网
+
+> 在项目根目录下 运行 `valet share`即可看到公网URL生成。
+
+当我们在浏览器中访问URL: http://5f27a60f.ngrok.io/api/user/123a 会在本地终端中看到基本的请求信息。
+
+
+依赖valet组件, valet安装步骤如下:
+
+1. brew update
+
+2. composer global require laravel/valet
+
+3. valet install #该命令会自动停止nginx然后按照一些nginx配置、php71（如果没安装）
+
+测试:
+
+xxx.dev 在本地均可以ping通。
+
+升级:
+
+composer global update
+
+valet install
+
+Valet常用命令:
+
+park、start、stop、restart、uninstall、path
+
+> park命令会将执行当前命令所在的目录当做Web根目录。
+
+
+
+本地开发, 建议直接使用 `php artisan serve` 启动8000端口的一个服务方便。 其它已安装的Apache、Nginx都不需要改动。
+
+
+### 框架基本
+
+> /routes/web.php
+
+```php
+// 限定请求方式
+Route::match(['get', 'post'], 'multiple', function () {
+    return "multiple: only get/post request";
+});
+
+//不限定请求方式
+Route::any('any', function (){
+    return "any request method supported.";
+});
+
+//携带参数
+Route::get('user/{id}', function ($id) {
+    return 'Hello '.$id;
+});
+
+//可选参数 optional params, default => lomo
+Route::get('users/{name?}', function ($name = 'lomo') {
+    return 'Hello '.$name;
+});
+
+//表达式限制
+Route::get('usera/{age?}', function ($age = '0') {
+    return 'User Age = '.$age;
+})->where('age', '[0-9]{0,3}');
+
+
+//路由别名, 可以在控制器、模板中直接使用别名,防止该文件中的路由变化时哪些文件也需要去修改。
+Route::get('user/user-center', ['as' => 'userCenter', function() {
+    return route('userCenter');
+}]);
+
+
+// 路由群组, 前缀
+// http://127.0.0.1:8000/member/usera/123
+// http://127.0.0.1:8000/member/users/123
+Route::group(['prefix' => 'member'], function () {
+
+    Route::get('usera/{age?}', function ($age = '0') {
+        return 'member-User Age = '.$age;
+    })->where('age', '[0-9]{0,3}');
+
+    Route::get('users/{name?}', function ($name = 'lomo') {
+        return 'Hello member-'.$name;
+    });
+
+});
+```
+
+
+### 视图(V)
+
+> 视图以及视图中的变量
+
+resource/views/下, 新建一个视图文件: testView.blade.php
+```php
+<?php
+echo "Test View....<br>";
+echo "Name: ". $name. " Age: ". $age;
+```
+
+app/Http/Controllers/下,新建控制器: testViewController
+```php
+<?php
+
+namespace  App\Http\Controllers;
+
+    class testViewController extends Controller {
+
+        public function testViews() {
+            return view('testView', [
+                'name' => 'Lomo',
+                'age' => '20'
+            ]);
+        }
+    }
+```
+
+配置路由, /routes/web.php
+
+```php
+Route::get('testview', 'testViewController@testViews');
+```
+
+测试:
+
+http://127.0.0.1:8000/testview
+
+ok, 一切正常。
+
+
+### 模型(M)
+
+新建模型 `php artisan make testViewModel` ,在app/下创建了model文件。但是在controller中调用时发现始终报错!
+
+
+尝试 `composer dump-autoload` 后依然报错,说 `Class 'app\testViewModel' not found`
+> 注意: view 模板里的变量一定要和controller传的保持一致,否则就报此错误!!!
+
+
+
+
+
+
+
+
+
 
 
 
