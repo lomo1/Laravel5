@@ -192,6 +192,90 @@ Laravel Framework 5.5.27
 
 ### 配置
 
+#### Mac开发环境配置
+
+> 本地使用Apache加载PHP解析模块的方式(非php-fpm), 需要对Apache做以下修改:
+
+```
+#apache
+cd ~
+vim /etc/apache2/httpd.conf
+
+# 1.找到.htaccess, 将 AllowOverride None 改为: AllowOverride all
+
+# 2. 将#LoadModule rewrite_module modules/mod_rewrite.so 前的#井号去掉, 重启Apache即可。
+```
+
+本地访问:
+`http://localhost/sites/laravelStudy/public/test`, 正常。(web.php里的路由)
+
+`http://localhost/sites/laravelStudy/public/api/testApi`, 正常。(api.php里的路由)
+
+`http://localhost/sites/laravelStudy/public/api/student/queryAll`, OK, 哈哈。
+
+
+#### CentOS 6.5
+
+> 在远程虚拟服务器centos6.5上也安装如上配置后,发现访问的是404.
+
+继续修改服务器Apache的配置文件:
+```
+vim /etc/httpd/conf/httpd.conf
+```
+由于本服务器上设置的站点目录为: `/data/website/`, 所以先找到该关键字, 再找到下方的`AllowOverride`, 并将`none`改为all。 如下。
+
+```
+<Directory />
+    Options FollowSymLinks
+    AllowOverride all
+</Directory>
+```
+测试:
+
+http://client-qatools.jdb-dev.com/laravela/public/home, 正常。 (基于web.php的路由)
+
+http://client-qatools.jdb-dev.com/laravela/public/users/lomo, 显示正常。
+
+
+http://client-qatools.jdb-dev.com/laravela/public/api/testApi, 正常。(基于api.php的路由)
+
+
+总结:
+> Rewirte主要的功能就是实现URL的跳转和隐藏真实地址，基于Perl语言的正则表达式规范。平时帮助我们实现拟静态，拟目录，域名跳转，防止盗链等
+
+
+#### 维护模式
+
+`php artisan down`, 开启维护模式,访问该应用任何页面或接口 均提示 `Be right back.`。
+
+与之对应的: `php artisan up`, 启动正常服务。
+
+
+#### IDE插件配置
+
+> https://github.com/barryvdh/laravel-ide-helper
+
+```
+#install
+composer require barryvdh/laravel-ide-helper
+
+#在 config/app.php 添加以下内容到 providers 数组
+Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
+#运行以下命令生成代码对应文档
+php artisan ide-helper:generate
+
+# 添加ignore `.gitignore`中, 该配置可能只是当前开发者IDE所需
+.idea
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+``
+
+中文参考: https://laravel-china.org/topics/2532/extended-recommendation-laravel-ide-helper-efficient-ide-smart-tips-plugin
+
+
+
 #### Nginx
 
 Nginx配置:
@@ -208,6 +292,7 @@ server{
 `/laravelStudy/config/`下的 `app.php`, `APP_DEBUG` 在本地开发环境时可以修改为`true`UTC, **线上环境坚决为FALSE**
 
 `timezone` 由 `UTC` => `PRC` ,北京时区.
+
 
 
 #### 数据库配置
@@ -448,6 +533,61 @@ ok, 一切正常。
 尝试 `composer dump-autoload` 后依然报错,说 `Class 'app\testViewModel' not found`
 > 注意: view 模板里的变量一定要和controller传的保持一致,否则就报此错误!!!
 
+
+
+### DB操作
+
+> 先创建一个数据库名为`laravelStudy`, 再在其中创建一个表: `student`, 表结构如下
+
+```
+USE `laravelStudy`;
+
+CREATE TABLE IF NOT EXISTS `student` (
+    `id` int(8) NOT NULL AUTO_INCREMENT,
+    `name` varchar(20) NOT NULL COMMENT '姓名',
+    `age` int(8) NOT NULL COMMENT '年龄',
+    `sex` int(2) COMMENT '行性别,0->male,1-female',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '插入日期',
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `descDate` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='介绍-partOne' AUTO_INCREMENT=1 ;
+```
+
+通过浏览器Get请求接口增删改查数据demo:
+
+增加数据:
+
+路由配置:
+
+`/routes/api.php`:
+```php
+
+```
+
+控制器生成: `php artisan make:controller xxxController`, 注意: 使用命令创建时 api.php里的空的路由要先注释掉 否则报错。
+
+
+
+访问:
+
+查询所有的结果:
+http://127.0.0.1:8000/api/student/queryAll
+
+查询某一个:
+http://127.0.0.1:8000/api/student/query/lomo
+
+
+添加:
+http://127.0.0.1:8000/api/student/add/lomo2/23/0
+
+更新:
+http://127.0.0.1:8000/api/student/update/1/26
+
+删除:
+http://127.0.0.1:8000/api/student/del/9
+
+> DB::table('表名')->truncate(); //该操作不返回任何值, 谨慎!
 
 
 
