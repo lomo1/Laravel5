@@ -25,3 +25,18 @@ Route::get('testApi', function () {
 Route::get('user/{id}', 'laravelStudyTestController@showProfileJSON');
 
 
+//测试demo
+
+//增加
+Route::get('student/add/{name}/{age}/{sex}', 'addStudentController@addStu');
+
+//删除
+Route::get('student/del/{id}', 'delStudentController@delStuById');
+
+//查询
+Route::get('student/queryAll', 'queryStudentController@queryStu');
+
+Route::get('student/query/{name}', 'queryStudentController@queryStuByName');
+
+//更新
+Route::get('student/update/{id}/{newAge}', 'updateStudentController@updateStu');
