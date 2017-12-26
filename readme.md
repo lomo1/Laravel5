@@ -107,7 +107,10 @@ laravel new laravelStudy
 
 `Exception/`目录包含应用的异常处理器, 应用抛异常。
 
-> app目录下的很多类可以用过命令生成,就是 `Artisan`命令, 使用帮助: `php artisan list make`
+> app目录下的很多类可以用过命令生成,就是 `Artisan`命令, 使用帮助: `php artisan list make`; `artisan`是Laravel框架内置命令行接口工具, 提供了一些列命令方便应用程序开发。
+
+`php artisan --version` 查看当前 `Laravel` 框架版本号.
+
 
 ```bash
 # php artisan list make
@@ -158,17 +161,19 @@ Available commands for the "make" namespace:
 
 1. `.evn`, 直接参考此处: https://docs.golaravel.com/docs/5.0/configuration/#environment-configuration, 该文件不应被提交到git
 
-2. `.env.example`, 
+2. `.env.example`, `.env`的示例文件
 
-3. `artisan`, 
+3. `artisan`, laravel提供的命令行工具
 
 4. `composer.json`, 类似npm的`package.json`
 
 5. `.gitignore`, ignore文件,不被git track 和 control; `.gitattributes`, 属性配置 便于github等系统识别该项目主要语言。
 
-6. `server.php`, 
+6. `server.php`, 模拟服务器的rewrite功能
 
 7. `yarn.lock`, yarn相关配置, 类似于node项目install后根目录下的那个`xxx-lock`文件。
+
+8. `_ide_helper.php`, 安装插件后产生的IDE帮助文件类
 
 
 ## Usage
@@ -270,7 +275,7 @@ php artisan ide-helper:generate
 _ide_helper.php
 _ide_helper_models.php
 .phpstorm.meta.php
-``
+```
 
 中文参考: https://laravel-china.org/topics/2532/extended-recommendation-laravel-ide-helper-efficient-ide-smart-tips-plugin
 
@@ -302,8 +307,9 @@ server{
 Laravel 高版本, 起码我现在用的这个5.5版本 通过composer安装时,项目根目录下生产了一个`.evn`文件,该文件里有一些通用的配置, 且该配置里的所有信息都会存在一个`$_ENV`的超级全局变量内。
 > 官方文档有说明
 
-修改 项目根目录下 `.env`文件里的
-```
+修改 项目根目录下 `.env`文件:
+
+```php
 DB_DATABASE=laravelStudy
 DB_USERNAME=root
 DB_PASSWORD=你的密码
@@ -312,6 +318,7 @@ DB_PASSWORD=你的密码
 
 ### 开始搞接口
 
+
 ```
 # 开启运行
 php artisan serve
@@ -319,10 +326,12 @@ php artisan serve
 
 项目根目录下:
 
+
 使用`artisan`命令创建控制器。语法: `controller:make 控制器名`;
 
 
 创建一个resource类型的控制器
+
 ```bash
 php artisan make:controller laravelStudyTestController
 # 生成
@@ -572,14 +581,16 @@ CREATE TABLE IF NOT EXISTS `student` (
 访问:
 
 查询所有的结果:
-http://127.0.0.1:8000/api/student/queryAll
+http://127.0.0.1:8000/api/student/queryAll, 或 `http://localhost/sites/laravelStudy/public/api/student/queryAll`
 
 查询某一个:
 http://127.0.0.1:8000/api/student/query/lomo
 
 
 添加:
-http://127.0.0.1:8000/api/student/add/lomo2/23/0
+http://127.0.0.1:8000/api/student/add/lomo2/23/0, 若果使用`php artisan serve`内置服务访问
+
+使用系统配置的服务器访问: http://localhost/sites/laravelStudy/public/api/student/add/lomo111/23/0
 
 更新:
 http://127.0.0.1:8000/api/student/update/1/26
