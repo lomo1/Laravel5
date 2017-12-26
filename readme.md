@@ -161,7 +161,7 @@ Available commands for the "make" namespace:
 
 1. `.evn`, 直接参考此处: https://docs.golaravel.com/docs/5.0/configuration/#environment-configuration, 该文件不应被提交到git
 
-2. `.env.example`, `.env`的示例文件
+2. `.env.example`, `.env`的示例文件, 其中`APP_DEBUG`只能在本地dev开发环境中设置为true!!! **prod一定要设置为FALSE**, 切记!!!
 
 3. `artisan`, laravel提供的命令行工具
 
@@ -174,6 +174,9 @@ Available commands for the "make" namespace:
 7. `yarn.lock`, yarn相关配置, 类似于node项目install后根目录下的那个`xxx-lock`文件。
 
 8. `_ide_helper.php`, 安装插件后产生的IDE帮助文件类
+
+
+> 很多项目环境变量设置直接在`.env`文件中设置 如: `APP_DEBUG`字段, `/config/app.php`中设置不起作用!
 
 
 ## Usage
@@ -556,12 +559,15 @@ CREATE TABLE IF NOT EXISTS `student` (
     `name` varchar(20) NOT NULL COMMENT '姓名',
     `age` int(8) NOT NULL COMMENT '年龄',
     `sex` int(2) COMMENT '行性别,0->male,1-female',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '插入日期',
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新日期',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `descDate` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='介绍-partOne' AUTO_INCREMENT=1 ;
 ```
+
+> `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP, ON UPDATE 会在数据发生更新时 数据库自动更新该字段值。
+
 
 通过浏览器Get请求接口增删改查数据demo:
 
