@@ -412,6 +412,16 @@ http://localhost:8000/api/user/sdfsdfsdf%E6%B0%B4%E7%94%B5%E8%B4%B9123
 
 当我们在浏览器中访问URL: http://5f27a60f.ngrok.io/api/user/123a 会在本地终端中看到基本的请求信息。
 
+> 修改Apache配置后,(我自己)本地公网访问地址: 
+
+```
+# api.php : 
+https://6c243e7b.ngrok.io/sites/laravelStudy/public/api/student/queryAll, 
+
+#web.php : 
+http://6c243e7b.ngrok.io/sites/laravelStudy/public/test
+```
+
 
 依赖valet组件, valet安装步骤如下:
 
@@ -606,6 +616,18 @@ http://127.0.0.1:8000/api/student/del/9
 
 > DB::table('表名')->truncate(); //该操作不返回任何值, 谨慎!
 
+
+#### demo
+
+laravel-Email
+
+laravel-cookie
+
+laravel-session
+
+laravel-jwt
+
+laravel-Log
 
 
 
