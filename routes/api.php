@@ -40,3 +40,22 @@ Route::get('student/query/{name}', 'queryStudentController@queryStuByName');
 
 //更新
 Route::get('student/update/{id}/{newAge}', 'updateStudentController@updateStu');
+
+
+/**
+ * ORM 数据操作路由
+ */
+
+//查询
+Route::get('ormQuery', 'queryStudentController@ormQuery');
+
+
+//新增
+Route::get('ormAdd', 'addStudentController@ormAdd');
+
+//更新数据
+Route::get('ormUpdate', 'updateStudentController@ormUpdate');
+
+
+//删除数据
+Route::get('ormDelete', 'delStudentController@ormDelete');
