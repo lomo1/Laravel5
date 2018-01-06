@@ -215,6 +215,9 @@ vim /etc/apache2/httpd.conf
 ```
 
 本地访问:
+
+> 本机Apache设置的Document root目录为/Users/xx/Sites/, sites是Sites目录下的其中一个目录。
+
 `http://localhost/sites/laravelStudy/public/test`, 正常。(web.php里的路由)
 
 `http://localhost/sites/laravelStudy/public/api/testApi`, 正常。(api.php里的路由)
