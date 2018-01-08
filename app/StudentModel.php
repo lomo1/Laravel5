@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentModel extends Model
 {
-    //关联该模型的表; 默认情况下为数据表名的复数(student->students); 此处手动指定表名!
+    //关联该模型的表; 默认情况下, 创建该模型时, Laravel会默认指定该模型的表即为该模型名的小写复数,如(创建模型名student, 则默认为对应数据表名为students); 如果不是则, 此处手动指定表名!
     protected $table = 'student';
 
-    //默认以id作为主键, 如果不是,则手动指定即可; ide会自动提示变量名(神奇吧~)
+    //同上, 默认以id作为主键, 如果不是,则手动指定即可; ide会自动提示变量名(神奇吧~)
     protected $primaryKey = 'id';
 
     //因为数据表student的时间设置格式不是时间戳形式保存,所以此处需要设定其为FALSE 才可以进行插入数据操作,否则会失败。
