@@ -21,7 +21,8 @@ composer global require "laravel/installer"
 # create Project
 laravel new laravelStudy
 
-#
+# 安装完成后, 对storage目录配置权限
+chmod -R 777 storage //775是不行的!
 ```
 
 ## Basic
@@ -633,6 +634,77 @@ laravel-jwt
 laravel-Log
 
 
+### Laravel之查询构造器
+
+TODO --
+
+### Laravel数据可操作之ORM
+
+之前里`DB`类的一些数据库操作方法是需要拼接sql语句! ORM里则看不到这种SQL语句。
+
+> ORM => Object Relation Mapping. 对象关系映射.  它是作用: 在关系型数据库(如:MySQL、MariaDB等)和业务实体对象之间作一个映射。可以简单理解为, ORM取代了我们传统里所编写的数据库操作相关的helper类。
+
+Laravel中的Eloquent ORM 提供了简洁的ActiveRecord实现来和数据库交互, 每个数据库表和一个对应的`模型` 用来与数据表进行交互。
+
+
+参考:
+
+https://docs.golaravel.com/docs/5.0/eloquent/
+
+
+Laravel ORM 使用场景: 大型、复杂应用。小型直接使用`DB`类即可。
+
+
+#### Laravel之ORM使用
+
+> https://docs.golaravel.com/docs/5.0/eloquent/
+
+建立模型
+
+```
+ #为student表建立模型
+ php artisan make:model StudentModel
+```
+
+```php
+//queryStudentController 添加查询
+    public function ormQuery()
+    {
+        $students = StudentModel::all();
+        dd($students);
+    }
+
+//路由 api.php
+Route::get('ormQuery', 'queryStudentController@ormQuery');
+
+```
+Test:
+
+http://localhost/sites/laravelStudy/public/api/ormQuery
+
+Pass.
+
+
+
+
+##### ORM-查询
+
+
+
+
+
+
+### 开发规范
+
+> https://fsdhub.com/books/laravel-specification
+
+
+
+### 扩展包
+
+TOP 100 扩展包
+
+> https://laravel-china.org/topics/2530/the-highest-amount-of-downloads-of-the-100-laravel-extensions-recommended
 
 
 
