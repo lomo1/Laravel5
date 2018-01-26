@@ -49,7 +49,8 @@ Route::get('usera/{age?}', function ($age = '0') {
 })->where('age', '[0-9]{0,3}');
 
 
-//路由别名, 可以在控制器、模板中直接使用别名,防止该文件中的路由变化时哪些文件也需要去修改。
+// 路由别名, 可以在控制器、模板中直接使用别名,防止该文件中的路由变化时哪些文件也需要去修改。
+// 别名也可以在在route中最后加上`->name('别名')`; 别名是为了方便在blade视图模板中使用 以防后期uri变更而不需要修改
 Route::get('user/user-center', ['as' => 'userCenter', function() {
     return route('userCenter');
 }]);
