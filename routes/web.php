@@ -73,3 +73,7 @@ Route::group(['prefix' => 'member'], function () {
 
 
 Route::get('testview', 'testViewController@testViews');
+Auth::routes();
+
+// 会覆盖前面定义的`/home` 路由
+Route::get('/home', 'HomeController@index')->name('home');
